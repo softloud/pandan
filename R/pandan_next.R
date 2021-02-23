@@ -1,0 +1,48 @@
+#' Get next actions
+#'
+#' Next three things to write and where to read from.
+#'
+#' @inheritParams pandan_dat
+#'
+#' @export
+
+pandan_next <- function(project, gs_url = Sys.getenv("PANDAN_MS")) {
+
+  # get data
+  dat <- suppressMessages(pandan_dat(project, gs_url))
+
+  # assign tasks to components
+  next_actions <-
+    dat %>%
+    purrr::pluck("components") %>%
+    dplyr::mutate(
+      next_action = dplyr::if_else(
+        completed <= length(components),
+        dat$levels[completed + 1],
+        "completed"
+      )
+    ) %>%
+    dplyr::arrange(completed) %>%
+    head(3)
+
+  read_from <-
+    dat %>%
+    purrr::pluck("editing") %>%
+    dplyr::arrange(completed) %>%
+    dplyr::slice(1) %>%
+    dplyr::pull(components)
+
+  next_actions %>%
+    dplyr::select(
+      Section = components,
+      Next = next_action
+    ) %>%
+    gt::gt() %>%
+    gt::tab_header(
+      title = glue::glue("Next actions in {project} manuscript")
+    ) %>%
+    gt::tab_source_note(
+      glue::glue("Then read from Section {read_from}.")
+    )
+
+}

@@ -1,5 +1,5 @@
 Package: pandan
-Title: What the Package Does (One Line, Title Case)
+Title: Minimalistic project tracking
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "First",
@@ -18,6 +18,8 @@ Imports:
     magrittr,
     googlesheets4,
     janitor,
-    dplyr
+    dplyr,
+    glue,
+    gt
 Suggests: 
     testthat

@@ -19,9 +19,9 @@
 #'
 #' @export
 
-project_dat <- function(
+pandan_dat <- function(
   project,
-  gs_url = Sys.getenv("PANDAN")
+  gs_url = Sys.getenv("PANDAN_MS")
 ) {
 
   # read data
@@ -47,24 +47,24 @@ project_dat <- function(
   list(
   components =
     pdat %>%
-    select(components) %>%
-    mutate(
+    dplyr::select(components) %>%
+    dplyr::mutate(
       completed = pdat %>%
-        select(-components) %>%
+        dplyr::select(-components) %>%
         apply(MARGIN = 1, FUN = sum)
     ),
 
   editing =
     edat %>%
-    select(components) %>%
-    mutate(
+    dplyr::select(components) %>%
+    dplyr::mutate(
       completed = edat %>%
-        select(-components) %>%
+        dplyr::select(-components) %>%
         apply(MARGIN = 1, FUN = sum)
     ),
 
-  levels = pdat %>% select(-components) %>% names,
-  components = pdat %>% pull(components)
+  levels = pdat %>% dplyr::select(-components) %>% names,
+  components = pdat %>% dplyr::pull(components)
 
   )
 
