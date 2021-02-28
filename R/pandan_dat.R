@@ -31,40 +31,44 @@ pandan_dat <- function(
     sheet = project
     )
 
-  # metadata
-  # complete this as I build the visualisation
-
   # divide into project and reading
-  pdat <-
+  component_progress <-
     alldat %>%
-    dplyr::select(1, !contains("read_edit"))
+    dplyr::select(1, !dplyr::starts_with("read_edit")) %>%
+    dplyr::mutate(components = as.character(components))
 
-  edat <-
+  # levels
+  levels <- component_progress %>%
+    dplyr::select(-components) %>%
+    names
+
+  edting_progress <-
     alldat %>%
-    dplyr::select(1, contains("read_edit"))
+    dplyr::select(1, dplyr::starts_with("read_edit"))
 
   pandan <-
   list(
   components =
-    pdat %>%
+    component_progress %>%
     dplyr::select(components) %>%
     dplyr::mutate(
-      completed = pdat %>%
+      completed = component_progress %>%
         dplyr::select(-components) %>%
         apply(MARGIN = 1, FUN = sum)
     ),
 
   editing =
-    edat %>%
+    edting_progress %>%
     dplyr::select(components) %>%
     dplyr::mutate(
-      completed = edat %>%
+      completed = edting_progress %>%
         dplyr::select(-components) %>%
         apply(MARGIN = 1, FUN = sum)
     ),
 
-  levels = pdat %>% dplyr::select(-components) %>% names,
-  components = pdat %>% dplyr::pull(components)
+  levels = levels,
+  sections = component_progress %>%
+    dplyr::pull(components)
 
   )
 

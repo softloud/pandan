@@ -2,6 +2,8 @@
 
 export("%>%")
 export(pandan_dat)
+export(pandan_instantiate)
 export(pandan_next)
+export(pandan_report)
 export(pandan_tracker)
 importFrom(magrittr,"%>%")
