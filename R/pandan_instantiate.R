@@ -8,12 +8,14 @@
 #'
 #' @inheritParams pandan_report
 #' @param objective A string describing what finished looks like.
+#' @param category Specify talk or manuscript.
 #'
 #' @export
 
 pandan_instantiate <- function (project,
                                 objective,
-                                gs_url = Sys.getenv("PANDAN_MS")) {
+                                category,
+                                gs_url = Sys.getenv("PANDAN_TRACKER")) {
   # create project tracker
 
   googlesheets4::sheet_copy(
@@ -29,7 +31,8 @@ pandan_instantiate <- function (project,
     data = tibble::tibble(
       project = project,
       description = objective,
-      status = "active"
+      status = "active",
+      category = category
     )
   )
 

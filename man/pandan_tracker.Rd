@@ -4,11 +4,10 @@
 \alias{pandan_tracker}
 \title{Open a pandan sheet}
 \usage{
-pandan_tracker(gs_url = Sys.getenv("PANDAN_MS"))
+pandan_tracker(tracker = "project")
 }
 \arguments{
-\item{gs_url}{Url for googlesheet. Defaults to system environment variable
-\code{PANDAN}. \code{usethis::edit_r_environ()} to set this.}
+\item{tracker}{Specify tracker, progress, or projects to open sheet.}
 }
 \description{
 Open a pandan sheet

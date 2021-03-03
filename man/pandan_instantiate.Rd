@@ -4,7 +4,12 @@
 \alias{pandan_instantiate}
 \title{Instantiate a project}
 \usage{
-pandan_instantiate(project, objective, gs_url = Sys.getenv("PANDAN_MS"))
+pandan_instantiate(
+  project,
+  objective,
+  category,
+  gs_url = Sys.getenv("PANDAN_TRACKER")
+)
 }
 \arguments{
 \item{project}{Project tracking sheet. First column for
@@ -13,6 +18,8 @@ and any column name containing \code{read_edit} will be classified as reading ov
 and editing, not project progress.}
 
 \item{objective}{A string describing what finished looks like.}
+
+\item{category}{Specify talk or manuscript.}
 
 \item{gs_url}{Url for googlesheet. Defaults to system environment variable
 \code{PANDAN}. \code{usethis::edit_r_environ()} to set this.}

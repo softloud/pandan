@@ -21,7 +21,7 @@
 
 pandan_dat <- function(
   project,
-  gs_url = Sys.getenv("PANDAN_MS")
+  gs_url = Sys.getenv("PANDAN_TRACKER")
 ) {
 
   # read data

@@ -7,7 +7,7 @@
 
 pandan_report <- function(
   project,
-  gs_url = Sys.getenv("PANDAN_MS"),
+  gs_url = Sys.getenv("PANDAN_TRACKER"),
   update = FALSE
   ) {
   dat <- suppressMessages(
@@ -16,6 +16,7 @@ pandan_report <- function(
 
   report_dat <-
   tibble::tibble(
+    date = lubridate::today(),
     project = project,
     writing = dat$components$completed %>% sum(),
     editing = dat$editing$completed %>% sum(),

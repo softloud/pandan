@@ -4,7 +4,7 @@
 \alias{pandan_report}
 \title{Report}
 \usage{
-pandan_report(project, gs_url = Sys.getenv("PANDAN_MS"), update = FALSE)
+pandan_report(project, gs_url = Sys.getenv("PANDAN_TRACKER"), update = FALSE)
 }
 \arguments{
 \item{project}{Project tracking sheet. First column for

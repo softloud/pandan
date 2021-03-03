@@ -4,7 +4,7 @@
 \alias{pandan_dat}
 \title{Get project data}
 \usage{
-pandan_dat(project, gs_url = Sys.getenv("PANDAN_MS"))
+pandan_dat(project, gs_url = Sys.getenv("PANDAN_TRACKER"))
 }
 \arguments{
 \item{project}{Project tracking sheet. First column for

@@ -4,7 +4,11 @@
 \alias{pandan_next}
 \title{Get next actions}
 \usage{
-pandan_next(project, gs_url = Sys.getenv("PANDAN_MS"))
+pandan_next(
+  project,
+  gs_url = Sys.getenv("PANDAN_TRACKER"),
+  gs_projects = Sys.getenv("PANDAN_PROJECTS")
+)
 }
 \arguments{
 \item{project}{Project tracking sheet. First column for
