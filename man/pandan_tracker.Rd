@@ -4,7 +4,7 @@
 \alias{pandan_tracker}
 \title{Open a pandan sheet}
 \usage{
-pandan_tracker(tracker = "project")
+pandan_tracker(tracker = "tracker")
 }
 \arguments{
 \item{tracker}{Specify tracker, progress, or projects to open sheet.}

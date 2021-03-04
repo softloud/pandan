@@ -6,7 +6,7 @@
 #' @export
 
 pandan_tracker <- function(
-  tracker = "project"
+  tracker = "tracker"
   ) {
 
   gs_url <- dplyr::case_when(
