@@ -9,6 +9,13 @@ pandan_view <- function(){
   dat <-   progress %>%
     dplyr::left_join(projects, by = "project")
 
+  completed <- projects %>%
+    dplyr::filter(status == "completed") %>%
+    dplyr::pull(project) %>%
+    paste0(collapse = ", ") %>% {
+    glue::glue("well done! you've completed: {.}.")
+    }
+
   dat %>%
     dplyr::group_by(project) %>%
     dplyr::mutate(total = components * levels,
@@ -23,7 +30,8 @@ pandan_view <- function(){
     ggthemes::theme_solarized() +
     rockthemes::scale_color_melloncollie() +
     ggplot2::labs(
-      title = "pandan progress"
+      title = "pandan progress",
+      subtitle = completed
     ) +
     ggplot2::theme(
       axis.title.x = ggplot2::element_blank(),
