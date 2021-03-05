@@ -19,10 +19,10 @@ pandan_view <- function(){
   dat %>%
     dplyr::group_by(project) %>%
     dplyr::mutate(total = components * levels,
-                  total_max = max(total)) %>%
+                  total_current = dplyr::last(total)) %>%
     dplyr::filter(status == "active") %>%
     ggplot2::ggplot(
-      ggplot2::aes(x = date, y = writing/total_max,
+      ggplot2::aes(x = date, y = writing/total_current,
                    group = project, colour = project)) +
     ggplot2::geom_line(alpha = 0.6) +
     ggplot2::geom_point(size = 4) +
