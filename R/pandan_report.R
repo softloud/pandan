@@ -21,7 +21,8 @@ pandan_report <- function(
     writing = dat$components$completed %>% sum(),
     editing = dat$editing$completed %>% sum(),
     components = dat$sections %>% length(),
-    levels = dat$levels %>% length()
+    levels = dat$levels %>% length(),
+    edit_n = dat$edit_n
   )
 
   if (isTRUE(update)) {

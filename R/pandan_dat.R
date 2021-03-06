@@ -65,11 +65,12 @@ pandan_dat <- function(
         dplyr::select(-components) %>%
         apply(MARGIN = 1, FUN = sum)
     ),
-
-  levels = levels,
   sections = component_progress %>%
-    dplyr::pull(components)
-
+    dplyr::pull(components),
+  levels = levels,
+  edit_n = alldat %>%
+    dplyr::select(dplyr::starts_with("read_edit"))
+  %>% ncol()
   )
 
   class(pandan) <- "pandan_project"

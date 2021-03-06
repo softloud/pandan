@@ -18,7 +18,7 @@ pandan_view <- function(){
 
   dat %>%
     dplyr::group_by(project) %>%
-    dplyr::mutate(total = components * levels,
+    dplyr::mutate(total = components * (levels + edit_n),
                   total_current = dplyr::last(total)) %>%
     dplyr::filter(status == "active") %>%
     ggplot2::ggplot(
