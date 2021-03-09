@@ -46,7 +46,7 @@ pandan_view <- function(project = "all"){
     ggplot2::theme(
       axis.title.x = ggplot2::element_blank(),
       axis.title.y = ggplot2::element_blank(),
-      legend.position = "bottom",
+      legend.position = "bottom", # c(0, 1),
       legend.direction = "vertical",
       legend.title = ggplot2::element_text("project")
     ) +
