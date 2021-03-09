@@ -16,7 +16,7 @@ pandan_report <- function(
 
   report_dat <-
   tibble::tibble(
-    date = lubridate::today(),
+    date = lubridate::now(),
     project = project,
     writing = dat$components$completed %>% sum(),
     editing = dat$editing$completed %>% sum(),
