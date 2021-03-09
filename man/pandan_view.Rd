@@ -4,7 +4,7 @@
 \alias{pandan_view}
 \title{See progress over time}
 \usage{
-pandan_view()
+pandan_view(project = "all")
 }
 \description{
 See progress over time
