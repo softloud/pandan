@@ -15,7 +15,7 @@
 #' @examples
 #' # runs because PANDAN url environment variable set and
 #' # pandan googlesheet at url
-#' project_dat("pandan")
+#' pandan_dat("waystation")
 #'
 #' @export
 

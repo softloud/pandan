@@ -16,7 +16,15 @@ pandan_instantiate <- function (project,
                                 objective,
                                 category,
                                 gs_url = Sys.getenv("PANDAN_TRACKER")) {
+
+  # check inputs
+  assertthat::assert_that(is.character(project) && !stringr::str_detect(project, "\\s"), msg = "Single-word project signfier")
+  assertthat::assert_that(is.character(objective), msg = "What would signify this project as completed?")
+  assertthat::assert_that(is.character(category), msg = "Specify if manuscript, coursework, site, etc. This is the facet label in the view.")
+
+
   # create project tracker
+
 
   googlesheets4::sheet_copy(
     from_ss = "https://docs.google.com/spreadsheets/d/1UXHQZcMa-6J_UkS-LO7bvX7lLVT7zB3kbROAxBf2Gpk/edit#gid=1712702589",
