@@ -12,7 +12,7 @@ pandan_view <- function(project = "all", distill=FALSE){
     dplyr::left_join(projects, by = "project")
 
   if (project != "all") {
-    dat <- progress %>%
+    dat <- dat %>%
       dplyr::filter(project == !!project)
   }
 
@@ -53,7 +53,7 @@ pandan_view <- function(project = "all", distill=FALSE){
   # final tweaks
   themed_plot +
     ggplot2::labs(
-      title = "pandan progress",
+      title = glue::glue("pandan progress to {dontpanic::title_date(Sys.Date())}"),
       subtitle = completed
     ) +
     ggplot2::theme(
