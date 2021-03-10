@@ -1,8 +1,10 @@
 #' See progress over time
 #'
+#' @param distill Plot theme for matching distill blog.
+#'
 #' @export
 
-pandan_view <- function(project = "all"){
+pandan_view <- function(project = "all", distill=FALSE){
   progress <- googlesheets4::read_sheet(Sys.getenv("PANDAN_PROGRESS"))
   projects <- googlesheets4::read_sheet(Sys.getenv("PANDAN_PROJECTS"))
 
@@ -21,6 +23,7 @@ pandan_view <- function(project = "all"){
     glue::glue("well done! you've completed: {.}.")
     }
 
+  project_plot <-
   dat %>%
     # create label for legend
     dplyr::mutate(
@@ -36,9 +39,19 @@ pandan_view <- function(project = "all"){
     ggplot2::geom_line(alpha = 0.6) +
     ggplot2::geom_point(size = 4) +
     ggplot2::facet_grid(category ~ .) +
-    ggthemes::theme_solarized() +
+
     rockthemes::scale_color_melloncollie(
-    ) +
+    )
+
+  themed_plot <-
+  if (isTRUE(distill)) {
+    project_plot + ggthemes::theme_fivethirtyeight()
+  } else {
+    project_plot +ggthemes::theme_solarized()
+  }
+
+  # final tweaks
+  themed_plot +
     ggplot2::labs(
       title = "pandan progress",
       subtitle = completed
@@ -51,5 +64,6 @@ pandan_view <- function(project = "all"){
       legend.title = ggplot2::element_text("project")
     ) +
     ggplot2::ylim(0,1)
+
 
 }

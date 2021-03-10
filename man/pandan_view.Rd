@@ -4,7 +4,10 @@
 \alias{pandan_view}
 \title{See progress over time}
 \usage{
-pandan_view(project = "all")
+pandan_view(project = "all", distill = FALSE)
+}
+\arguments{
+\item{distill}{Plot theme for matching distill blog.}
 }
 \description{
 See progress over time
