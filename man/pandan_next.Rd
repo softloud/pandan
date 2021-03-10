@@ -18,6 +18,8 @@ and editing, not project progress.}
 
 \item{gs_url}{Url for googlesheet. Defaults to system environment variable
 \code{PANDAN}. \code{usethis::edit_r_environ()} to set this.}
+
+\item{gs_projects}{Url for projects \verb{pandan_tracker("projects)}.}
 }
 \description{
 Next three things to write and where to read from.

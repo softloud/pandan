@@ -7,6 +7,8 @@
 pandan_view(project = "all", distill = FALSE)
 }
 \arguments{
+\item{project}{Choose from one of the projects in \link{pandan_view}.}
+
 \item{distill}{Plot theme for matching distill blog.}
 }
 \description{

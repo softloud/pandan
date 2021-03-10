@@ -1,5 +1,6 @@
 #' See progress over time
 #'
+#' @param project Choose from one of the projects in [pandan_view].
 #' @param distill Plot theme for matching distill blog.
 #'
 #' @export
