@@ -31,5 +31,6 @@ Imports:
     stringr
 Suggests: 
     testthat
-Remotes: 
-    johnmackintosh/rockthemes
+Remotes:  
+    johnmackintosh/rockthemes,
+    softloud/dontpanic
