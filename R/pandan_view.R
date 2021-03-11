@@ -29,7 +29,7 @@ pandan_view <- function(project = "all", distill=FALSE){
     # create label for legend
     dplyr::mutate(
       project_name = project,
-      project = stringr::str_c(project, description, sep = " | ")) %>%
+      project = stringr::str_c(project, description, sep = " | ") %>% stringr::str_wrap()) %>%
     dplyr::group_by(project) %>%
     dplyr::mutate(total = components * (levels + edit_n),
                   total_current = dplyr::last(total)) %>%
