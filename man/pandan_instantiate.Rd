@@ -8,6 +8,7 @@ pandan_instantiate(
   project,
   objective,
   category,
+  group,
   gs_url = Sys.getenv("PANDAN_TRACKER")
 )
 }
@@ -20,6 +21,8 @@ and editing, not project progress.}
 \item{objective}{A string describing what finished looks like.}
 
 \item{category}{Specify talk or manuscript.}
+
+\item{group}{Specify meta category}
 
 \item{gs_url}{Url for googlesheet. Defaults to system environment variable
 \code{PANDAN}. \code{usethis::edit_r_environ()} to set this.}

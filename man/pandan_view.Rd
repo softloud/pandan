@@ -4,12 +4,15 @@
 \alias{pandan_view}
 \title{See progress over time}
 \usage{
-pandan_view(project = "all", distill = FALSE)
+pandan_view(project = "all", distill = FALSE, update = TRUE)
 }
 \arguments{
 \item{project}{Choose from one of the projects in \link{pandan_view}.}
 
 \item{distill}{Plot theme for matching distill blog.}
+
+\item{update}{Run \link{project_report} with update for all \code{status == "active"}
+projects, unless project is not "all".}
 }
 \description{
 See progress over time

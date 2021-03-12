@@ -9,12 +9,14 @@
 #' @inheritParams pandan_report
 #' @param objective A string describing what finished looks like.
 #' @param category Specify talk or manuscript.
+#' @param group Specify meta category
 #'
 #' @export
 
 pandan_instantiate <- function (project,
                                 objective,
                                 category,
+                                group,
                                 gs_url = Sys.getenv("PANDAN_TRACKER")) {
 
   # check inputs
@@ -24,10 +26,8 @@ pandan_instantiate <- function (project,
 
 
   # create project tracker
-
-
   googlesheets4::sheet_copy(
-    from_ss = "https://docs.google.com/spreadsheets/d/1UXHQZcMa-6J_UkS-LO7bvX7lLVT7zB3kbROAxBf2Gpk/edit#gid=1712702589",
+    from_ss = Sys.getenv("PANDAN_PROJECTS"),
     from_sheet = "template",
     to_sheet = project,
     .after = "template"
@@ -35,12 +35,13 @@ pandan_instantiate <- function (project,
 
   # add to project list
   googlesheets4::sheet_append(
-    ss = "https://docs.google.com/spreadsheets/d/1q1dJMjJRVgH6nFW_59RngF4YBkHX1RW2ZgekZVIE_zY/edit#gid=0",
+    ss = Sys.getenv("PANDAN_PROJECTS"),
     data = tibble::tibble(
       project = project,
       description = objective,
       status = "active",
-      category = category
+      category = category,
+      group = group
     )
   )
 
@@ -48,4 +49,7 @@ pandan_instantiate <- function (project,
   pandan_report(project,
                 gs_url,
                 update = TRUE)
+
+  print("Check project description in gs; opening sheet in browser.")
+  pandan_tracker("projects")
 }
