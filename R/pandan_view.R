@@ -110,5 +110,4 @@ pandan_view <-
         legend.direction = "vertical",
         legend.title = ggplot2::element_text("project")
       )
-
   }
