@@ -70,6 +70,13 @@ pandan_view <-
           colour = project,
           shape = category
         )
+      )  +
+      ggplot2::geom_hline(data = tibble::tibble(
+        progress = c("sweet fuck all", "halfway!", "completed"),
+        value = c(0, 0.5, 1)
+      ),
+      alpha = 0.2,
+      ggplot2::aes(yintercept = value, linetype = progress)
       ) +
       ggplot2::geom_line(alpha = 0.3) +
       ggplot2::geom_point(size = 6, alpha = 0.6) +
@@ -77,7 +84,9 @@ pandan_view <-
     # once I figure out how to switch the y axis to the right
     # switch="y") +
     # ggplot2::scale_y_continuous(position = "right") +
-      rockthemes::scale_color_melloncollie()
+      rockthemes::scale_color_melloncollie() +
+      ggplot2::ylim(-0.2, 1.2)
+
 
     themed_plot <-
       if (isTRUE(distill)) {

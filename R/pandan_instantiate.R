@@ -27,7 +27,7 @@ pandan_instantiate <- function (project,
 
   # create project tracker
   googlesheets4::sheet_copy(
-    from_ss = Sys.getenv("PANDAN_PROJECTS"),
+    from_ss = Sys.getenv("PANDAN_TRACKER"),
     from_sheet = "template",
     to_sheet = project,
     .after = "template"
