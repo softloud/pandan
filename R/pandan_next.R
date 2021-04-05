@@ -33,7 +33,7 @@ pandan_next <- function(project,
       )
     ) %>%
     dplyr::arrange(completed) %>%
-    head(3)
+    head(1)
 
   read_from <-
     dat %>%

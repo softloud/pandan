@@ -13,6 +13,7 @@ pandan_view <-
            update = TRUE) {
     projects <- googlesheets4::read_sheet(Sys.getenv("PANDAN_PROJECTS"))
 
+    # update
     if (isTRUE(update)) {
       if (project != "all") {
         pandan_report(!!project, update = TRUE)
@@ -29,7 +30,13 @@ pandan_view <-
     }
 
     progress <-
-      googlesheets4::read_sheet(Sys.getenv("PANDAN_PROGRESS"))
+      googlesheets4::read_sheet(Sys.getenv("PANDAN_PROGRESS")) %>%
+      # filter to last record on a given date
+      dplyr::mutate(day = lubridate::date(date)) %>%
+      dplyr::group_by(day) %>%
+      dplyr::mutate(last_time = max(date)) %>%
+      dplyr::filter(date == last_time) %>%
+      dplyr::select(-last_time)
 
 
 
@@ -53,7 +60,8 @@ pandan_view <-
       # create label for legend
       dplyr::mutate(
         project_name = project,
-        project = stringr::str_c(project, description, sep = " | ") %>% stringr::str_wrap()
+        project = stringr::str_c(project, description, sep = " | ") %>%
+          stringr::str_wrap()
       ) %>%
       dplyr::group_by(project) %>%
       dplyr::mutate(total = components * (levels + edit_n),
@@ -64,26 +72,27 @@ pandan_view <-
       plotdat %>%
       ggplot2::ggplot(
         ggplot2::aes(
-          x = date,
+          x = day,
           y = writing / total_current,
           group = project,
           colour = project,
           shape = category
         )
       )  +
-      ggplot2::geom_hline(data = tibble::tibble(
-        progress = c("sweet fuck all", "halfway!", "completed"),
-        value = c(0, 0.5, 1)
-      ),
-      alpha = 0.2,
-      ggplot2::aes(yintercept = value, linetype = progress)
+      ggplot2::geom_hline(
+        data = tibble::tibble(
+          progress = c("sweet fuck all", "halfway!", "completed"),
+          value = c(0, 0.5, 1)
+        ),
+        alpha = 0.2,
+        ggplot2::aes(yintercept = value, linetype = progress)
       ) +
       ggplot2::geom_line(alpha = 0.3) +
       ggplot2::geom_point(size = 6, alpha = 0.6) +
       ggplot2::facet_grid(group ~ ., labeller = ggplot2::label_parsed) + #,
-    # once I figure out how to switch the y axis to the right
-    # switch="y") +
-    # ggplot2::scale_y_continuous(position = "right") +
+      # once I figure out how to switch the y axis to the right
+      # switch="y") +
+      # ggplot2::scale_y_continuous(position = "right") +
       rockthemes::scale_color_melloncollie() +
       ggplot2::ylim(-0.2, 1.2)
 
