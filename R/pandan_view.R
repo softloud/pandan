@@ -16,7 +16,7 @@ pandan_view <-
     # update
     if (isTRUE(update)) {
       if (project != "all") {
-        pandan_report(!!project, update = TRUE)
+        pandan_report({{project}}, update = TRUE)
       } else {
         projects %>%
           dplyr::filter(status == "active") %>%
@@ -105,6 +105,7 @@ pandan_view <-
       }
 
     # final tweaks
+    output_plot <-
     themed_plot +
       ggplot2::labs(
         title = glue::glue("pandan progress to {dontpanic::title_date(Sys.Date())}"),
@@ -119,4 +120,8 @@ pandan_view <-
         legend.direction = "vertical",
         legend.title = ggplot2::element_text("project")
       )
+
+    pandan_tracker()
+    output_plot
+
   }
