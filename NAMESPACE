@@ -2,9 +2,11 @@
 
 export("%>%")
 export(pandan_dat)
+export(pandan_gantt)
 export(pandan_instantiate)
 export(pandan_next)
 export(pandan_report)
 export(pandan_tracker)
 export(pandan_view)
+export(wrangle_gantt_dat)
 importFrom(magrittr,"%>%")

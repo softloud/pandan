@@ -4,21 +4,12 @@
 \alias{pandan_gantt}
 \title{Gantt chart}
 \usage{
-pandan_gantt(
-  gantt_url = Sys.getenv("PANDAN_GANTT"),
-  predecessor_sep = "\\\\s*;\\\\s*"
-)
+pandan_gantt(plotdat)
 }
 \arguments{
-\item{gantt_url}{gs with sheets gantt and project key and meta}
-
-\item{predecessor_sep}{Separator for predecessors, defaults to semicolon with any amount of white space around.}
-
-\item{gantt_df}{Dataframe of the form project    task
-predecessors    optimistic    normal    pessimistic
-status added
-
-where time is measured in days.}
+\item{gantt_url}{gs with sheets gantt and project key and meta.
+gantt has columns: predecessors    optimistic    normal    pessimistic
+status added where time is measured in days.}
 }
 \description{
 A gantt chart is a type of bar chart with tasks performed in the y axis
@@ -38,4 +29,6 @@ The expected time is estimated using a Beta distribution statistic,
 $$
 (O + 4M + P) / 6
 $$
+
+Trackers only for reading and writing, gantts for everything else.
 }
