@@ -4,7 +4,7 @@
 \alias{pandan_view}
 \title{See progress over time}
 \usage{
-pandan_view(project = "all", distill = FALSE, update = TRUE)
+pandan_view(project = "all", distill = FALSE, update = FALSE)
 }
 \arguments{
 \item{project}{Choose from one of the projects in \link{pandan_view}.}

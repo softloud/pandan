@@ -1,0 +1,18 @@
+component,project,subproject,objective,predecessors,status,optimistic,normal,pessimistic,gh,whose_priorities
+0,gantt,gantt,"have a functional gantt chart for all projects, and for embedding in measured. and in hpp::",NA,active,14,168,252,9,C
+1,gantt,debug,"dates, objective",NA,active,14,28,56,NA,NA
+0,hpp,hpp,"prepare for next team meeting: see to T, H, G's priorities",NA,active,NA,NA,NA,NA,NA
+1,hpp,qa,"everyone in group is satisfied the data has been matched the indexes assumed in the models and code; do the same things, such as random check for each variabe, index, moderator",NA,active,14,28,56,NA,H; C
+1.1,hpp,random check,"create a check for each var and subgroup, each index of model",NA,active,14,28,56,22,NA
+2,hpp,subgroups,create pipeline for subgroup analyses with parameterised reports,NA,paused,14,28,56,NA,T; G
+3,hpp,site,hpp tracker completed,NA,paused,14,28,56,NA,C
+3.1,hpp,vis,plots in targets,NA,NA,14,28,56,NA,NA
+3.1.1,hpp,vis,move plot to target,NA,NA,1,2,3,NA,NA
+4,hpp,cipriani imitate,ensure we hit all the same beats as cipriani in the analysis,NA,paused,112,140,168,NA,T; G
+4.1,hpp,cipriani imitate,replication,NA,paused,28,42,56,NA,C
+5,hpp,simulation,"increasingly, I'm convinced I should be building simulations from the start. I think this will help me conecptualise the models we are dealing with.",NA,paused,NA,NA,NA,NA,C
+6,hpp,hashed data,NA,NA,active,1,21,48,23,C
+7,hpp,pairwise,NA,NA,paused,14,28,56,NA,G
+8,hpp,studies,NA,NA,active,1,2,3,20,NA
+0,tubes,tubes,slow internet troubleshoot,NA,active,14,28,56,NA,C
+1,reading,protocol,take notes and incorporate into site,NA,active,2,5,14,NA,G; H; T

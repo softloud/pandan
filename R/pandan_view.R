@@ -10,7 +10,7 @@
 pandan_view <-
   function(project = "all",
            distill = FALSE,
-           update = TRUE) {
+           update = FALSE) {
     projects <- googlesheets4::read_sheet(Sys.getenv("PANDAN_PROJECTS"))
 
     # update
@@ -48,11 +48,20 @@ pandan_view <-
         dplyr::filter(project == !!project)
     }
 
+    # tag table with completed projects
     completed <- projects %>%
       dplyr::filter(status == "completed") %>%
       dplyr::pull(project) %>%
       paste0(collapse = ", ") %>% {
         glue::glue("well done! you've completed: {.}.")
+      }
+
+    # tag table with fermata projects
+    fermata <- projects %>%
+      dplyr::filter(status == "fermata") %>%
+      dplyr::pull(project) %>%
+      paste0(collapse = ", ") %>% {
+        glue::glue("fermata: {.}.")
       }
 
     plotdat <-
@@ -108,8 +117,11 @@ pandan_view <-
     output_plot <-
     themed_plot +
       ggplot2::labs(
-        title = glue::glue("pandan progress to {dontpanic::title_date(Sys.Date())}"),
-        subtitle = completed
+        title =
+          glue::glue("pandan progress to {dontpanic::title_date(Sys.Date())}"),
+        subtitle = glue::glue("{completed}
+                              {fermata}
+                              ")
       ) +
       ggplot2::theme(
         strip.text.y = ggplot2::element_text(angle = 0),
@@ -121,7 +133,6 @@ pandan_view <-
         legend.title = ggplot2::element_text("project")
       )
 
-    pandan_tracker()
     output_plot
 
   }

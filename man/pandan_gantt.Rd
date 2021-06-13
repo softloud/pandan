@@ -4,7 +4,7 @@
 \alias{pandan_gantt}
 \title{Gantt chart}
 \usage{
-pandan_gantt(plotdat)
+pandan_gantt(plotdat, project)
 }
 \arguments{
 \item{gantt_url}{gs with sheets gantt and project key and meta.
