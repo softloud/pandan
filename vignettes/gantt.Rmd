@@ -1,0 +1,70 @@
+---
+title: "gantt"
+subtitle: "in development in targets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{gantt}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+knitr::opts_knit$set(root.dir = here::here())
+
+```
+
+```{r setup, message=FALSE}
+library(pandan)
+library(targets)
+library(gt)
+library(tidyverse)
+
+```
+
+## Objective
+
+A Gantt chart of my current progress with current projects with the features:
+
+- [ ] Subprojects whose start times take into account dependencies.
+- [ ] Scrapes from gs.
+- [ ] Easy entry gs.
+- [ ] Shaded progress bar of total project.
+- [ ] Beta distribution estimated time based on Optimistic, Normal, and Pessimistic 
+predictions.
+
+## Development status
+
+```{r fig.width=10, fig.align='center', echo=FALSE, message=FALSE,warning=FALSE,output=FALSE}
+tar_glimpse()
+```
+
+
+## Dependencies
+
+```{r}
+# dev dataset
+tar_load(obs_proj)
+
+obs_proj %>% gt()
+```
+
+Based on these data, when _should_ the start and end points be?
+
+Component `a_1` is not dependent on anything, and it is a top-level project, so its start and end times should span at its instantiated endpoint. 
+
+```{r}
+obs_proj %>% 
+  filter(component == "a_1") %>% 
+  select(project, start_inst, end_inst) %>% 
+  gt()
+
+```
+
+Component `a_1.1` is dependent on `a_1.2.1`. So, the start point needs to be endpoint of `a_1.2.1`.
+
+

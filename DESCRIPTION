@@ -30,8 +30,11 @@ Imports:
     dontpanic (>= 0.0.0.9000),
     stringr
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Remotes: 
     johnmackintosh/rockthemes,
     softloud/dontpanic
 Config/testthat/edition: 3
+VignetteBuilder: knitr
