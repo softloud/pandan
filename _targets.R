@@ -51,21 +51,7 @@ list(
     obs,
     raw_obs %>%
       mutate(
-        component = str_c(project, component, sep = "_"),
-        pred_c = map_chr(
-          component,
-          .f = function(c) {
-            str_match(c, "(.*)\\.\\d*") %>% pluck(2)
-          }
-        ),
-        pred =
-          case_when(
-            !is.na(pred_c) & !is.na(pred) ~ glue("{pred_c};{pred}"),
-            is.na(pred_c) & !is.na(pred) ~ glue("{pred}"),
-            !is.na(pred_c) & is.na(pred) ~ glue("{pred_c}")
-          ) %>% str_split(pattern = ";")
-      ) %>%
-      select(project, component, time, everything(),-pred_c)
+        component = str_c(project, component, sep = "_"))
 
   ),
 
@@ -78,21 +64,48 @@ list(
                )
                ),
 
+
+  tar_target(set_inits,
+             obs_proj %>%
+               mutate(
+                 start = start_inst,
+                 end = end_inst
+               )
+
+             ),
+
+  tar_target(start,
+             set_inits %>%
+               mutate(
+                 max_pred_start = map_chr(
+                   pred,
+                   function(p) {
+                     set_inits %>%
+                       filter(
+                         component %in% p | pred %in% p
+                       ) %>%
+                       arrange(desc(end)) %>%
+                       head(1) %>%
+                       pull(end) %>%
+                       as.character()
+                   }
+                 ) %>% ymd()
+               )
+             ),
+
   tar_target(
-    find_max,
-    obs_proj %>%
-      filter(component != "a_1") %>%
-      mutate(
-        start = map(pred, .f = function(proj, end_points){
-          tibble(
-            component = pred
-          )
-          # %>%
-          #   left_join(obs_proj) %>%
-          #   arrange(desc(end_inst)) %>%
-          #     select(component, end_inst)
-        })
-      )
+    vis,
+    set_interval %>%
+      ggplot() +
+      geom_segment(
+        aes(
+          x = start,
+          xend = end,
+          y = component,
+          yend = component
+        )
+      ) +
+      facet_grid(project ~ .,  scales = "free")
   ),
 
   NULL

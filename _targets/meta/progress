@@ -1,3 +1,8 @@
 name|type|parent|branches|progress
-find_max|stem|find_max|0|started
-find_max|stem|find_max|0|built
+raw_proj|stem|raw_proj|0|skipped
+raw_obs|stem|raw_obs|0|skipped
+obs|stem|obs|0|skipped
+obs_proj|stem|obs_proj|0|skipped
+set_inits|stem|set_inits|0|skipped
+start|stem|start|0|started
+start|stem|start|0|built

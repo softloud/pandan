@@ -50,7 +50,7 @@ pandan_next <- function(project,
     gt::gt() %>%
     gt::tab_header(
       title = glue::glue("Next actions in {project} {project_category}"),
-      subtitle = project_desc
+      subtitle = stringr::str_wrap(project_desc, 60)
     ) %>%
     gt::tab_source_note(
       glue::glue("Then read from Section {read_from}.")

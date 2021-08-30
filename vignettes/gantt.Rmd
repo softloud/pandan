@@ -67,4 +67,10 @@ obs_proj %>%
 
 Component `a_1.1` is dependent on `a_1.2.1`. So, the start point needs to be endpoint of `a_1.2.1`.
 
+```{r}
+obs_proj %>% 
+  filter(component == "a_1.1") %>%
+  pull(pred)
+
+```
 

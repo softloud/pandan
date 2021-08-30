@@ -1,11 +1,7 @@
 library(googlesheets4)
 
-gantt_df <-
-  read_sheet("https://docs.google.com/spreadsheets/d/15joXuw0BBtU5tSbK7QIGWInhbYJ8XUh8bVW9HgCuhhE/edit#gid=0")
-
-
 test_that("get a dataframe", {
-  expect_equal("data.frame" %in% class(gantt_df), TRUE)
+  expect_type(wrangle_gantt_dat(), "list")
 })
 
 test_that("get a plot", {
