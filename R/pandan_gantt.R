@@ -76,6 +76,12 @@ pandan_gantt <- function() {
       ),
       alpha = 0.4
     ) +
+      ggplot2::geom_vline(
+        xintercept = lubridate::today(),
+        colour = "darkgreen",
+        size = 1.5,
+        alpha = 0.2
+      ) +
     ggplot2::geom_segment(
       ggplot2::aes(
         x = start,
@@ -90,7 +96,7 @@ pandan_gantt <- function() {
       ggplot2::aes(
         x = start,
         y = project,
-        label = stringr::str_wrap(objective, 20)
+        label = stringr::str_wrap(objective, 80)
       ),
       size = 3.5,
       nudge_y = 0.3,
