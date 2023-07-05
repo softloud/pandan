@@ -2,9 +2,10 @@
 #'
 #' @export
 
-wrangle_gantt_dat <- function(
-  gantt_df = googlesheets4::read_sheet(Sys.getenv("PANDAN_GANTT"), "minigantt")
-) {
+wrangle_gantt_dat <- function() {
+
+  googlesheets4::gs4_deauth()
+  gantt_df <- googlesheets4::read_sheet(Sys.getenv("PANDAN_GANTT"), "minigantt")
 
     gantt_df %>%
     janitor::clean_names() %>%

@@ -11,6 +11,8 @@ pandan_view <-
   function(project = "all",
            distill = FALSE,
            update = FALSE) {
+    # get data
+    googlesheets4::gs4_deauth()
     projects <- googlesheets4::read_sheet(Sys.getenv("PANDAN_PROJECTS"))
 
     # update

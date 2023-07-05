@@ -27,7 +27,7 @@ pandan_report <- function(
 
   if (isTRUE(update)) {
     googlesheets4::sheet_append(
-      ss = "https://docs.google.com/spreadsheets/d/1G_35kjbqgnl6L983TR6ccGiikqk9vOmB7yptD5z3yyM/edit#gid=0",
+      ss = Sys.getenv("PANDAN_PROGRESS"),
       data = report_dat
     )
   }
