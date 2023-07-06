@@ -1,22 +1,69 @@
+gantt_pal <- list(
+  murky_gold = "darkgoldenrod4",
+  murky_blue = "cadetblue4",
+  murky_grey = "azure4",
+  murky_green = "darkolivegreen"
+)
+
+
+status_levels <- tibble::tribble(
+  ~status, ~colour,
+  "completed", gantt_pal$murky_green,
+  "overdue", gantt_pal$murky_gold,
+  "due", gantt_pal$murky_gold,
+  "in progress", gantt_pal$murky_blue,
+  "scheduled", gantt_pal$murky_grey,
+  "sometime", gantt_pal$murky_grey,
+  "project", gantt_pal$murky_grey
+)
+
 #' Wrangle data for Gantt plot
 #'
 #' @export
 
 wrangle_gantt_dat <- function() {
-
   googlesheets4::gs4_deauth()
-  gantt_df <- googlesheets4::read_sheet(Sys.getenv("PANDAN_GANTT"), "minigantt")
+  gantt_df <- googlesheets4::read_sheet(Sys.getenv("PANDAN_GANTT"),
+                                        col_types = c("iccccDciDDcc"))
 
-    gantt_df %>%
+  gantt_df %>%
     janitor::clean_names() %>%
-    dplyr::mutate(
-      start = lubridate::ymd(start),
-      end = start + (optimistic + 4 * normal + pessimistic) / 6
+    # convert to lubridate
+    mutate(across(where(is.Date), lubridate::ymd)) %>%
+    mutate(
+      status = case_when(
+        is.na(task) ~ "project",!is.na(status) ~ status,
+          !is.na(end) ~ "completed",!is.na(due) &
+          due < today() ~ "overdue",
+        due == today() ~ "due",
+        start > today() ~ "scheduled",!is.na(start) ~ "in progress",
+        is.na(start) ~ "sometime",
+        .default = "this is an error"
+      )
     ) %>%
-    dplyr::select(
-      project, start, end, dplyr::everything()
-    )
-
+    dplyr::filter(!str_detect(status, "dropped")) %>%
+    mutate(
+      # calculate predicted end - must happen after completed
+      end = if_else(
+        is.na(end) & !is.na(predicted_days),
+        start +
+          days(predicted_days - 1),
+        end
+      ),
+      # update overdue
+      status = case_when(
+        status == "in progress" & end < today() ~ "overdue",
+        status == "in progress" & end == today() ~ "due",
+        .default = status
+      ),
+      # add levels to status
+      status = as_factor(status) %>% fct_relevel(status_levels$status)
+    ) %>%
+    mutate(# set levels for fokus
+      fokus = as_factor(fokus) %>%
+        fct_relevel("phi", "theta", "psi", "pi"),) %>%
+    arrange(fokus, due, project) %>%
+    dplyr::ungroup()
 }
 
 #' Gantt chart
@@ -42,86 +89,104 @@ wrangle_gantt_dat <- function() {
 #'
 #' @export
 
-pandan_gantt <- function() {
-
+pandan_gantt <- function(font_size = 20) {
   gantt_dat <-
     wrangle_gantt_dat()
 
-  events <-
-    googlesheets4::read_sheet(Sys.getenv("PANDAN_GANTT"), "events") %>%
-    dplyr::mutate(
-      date = lubridate::ymd(date)
-    ) %>%
-    dplyr::bind_rows(
-      tibble::tibble(
-      date = lubridate::today(),
-      event = "today")
-    ) %>%
-    dplyr::mutate(
-      id = dplyr::row_number()
-    ) %>%
-    dplyr::arrange(desc(id)) %>%
-    dplyr::select(-id)
+  gantt_min_df <- gantt_dat %>%
+    dplyr::filter(status %in% c("overdue", "due", "in progress")) %>%
+    dplyr::filter(start == min(start, na.rm = TRUE))
 
-  #gantt_plot <-
-    gantt_dat %>%
-    dplyr::mutate(
-      month = lubridate::month(start, label = TRUE, abbr = FALSE)
-    ) %>%
-    ggplot2::ggplot() +
-    ggplot2::geom_vline(
-      data = events,
-      ggplot2::aes(
-        xintercept = date,
-        linetype = event
+  gantt_min <-
+    if (nrow(gantt_min_df) == 0)
+      return(today())
+  else
+    pluck(gantt_min_df, "start", 1)
+
+  # set to today?
+
+  gantt_max <- gantt_dat %>%
+    dplyr::filter(end == max(end, na.rm = TRUE)) %>%
+    pluck("end", 1)
+
+
+  gantt_dat %>%
+    ggplot() +
+    theme_minimal(base_family = "serif", base_size = font_size) +
+    # today
+    geom_rect(
+      data = NULL,
+      aes(
+        xmin = today(),
+        xmax = today() + 1,
+        ymin = -Inf,
+        ymax = Inf
       ),
-      alpha = 0.4
+      # linetype = "dotted",
+      alpha = 0.1,
+      fill = gantt_pal$murky_blue
     ) +
-      ggplot2::geom_vline(
-        xintercept = lubridate::today(),
-        colour = "darkgreen",
-        size = 1.5,
-        alpha = 0.2
-      ) +
-    ggplot2::geom_segment(
-      ggplot2::aes(
+    # planned work
+    geom_segment(
+      aes(
         x = start,
-        xend = end,
-        y = project,
-        yend = project
+        xend = end + 1,
+        y = task,
+        yend = task,
+        colour = status
       ),
-      size = 10,
-      alpha = 0.3
+      alpha = 0.3,
+      linewidth = 6
     ) +
-    ggplot2::geom_text(
-      ggplot2::aes(
-        x = start,
-        y = project,
-        label = stringr::str_wrap(objective, 80)
+    # due dates
+    geom_segment(
+      aes(
+        x = due,
+        xend = due + 1,
+        y = task,
+        yend = task,
+        colour = status
       ),
-      size = 3.5,
-      nudge_y = 0.3,
-      hjust = 0,
-      alpha = 0.8
+      alpha = 0.3,
+      size = 12
     ) +
-    ggthemes::theme_solarized_2() +
-    ggplot2::labs(
-      title = "Stuff Charles is working on",
-      x = "date"
+    # planned work
+    geom_text(
+      aes(x = start,
+          label = task,
+          y = task),
+      size = font_size * 0.3,
+      alpha = 0.5,
+      family = "serif",
+      # nudge_y = 0.2,
+      hjust = 0
     ) +
-      ggplot2::theme(
-        legend.position = "bottom"
-      ) +
-      ggplot2::facet_wrap(~ month, scales = "free")
+    scale_color_manual(values = status_levels$colour) +
+    theme(
+      axis.text.y = element_blank(),
+      axis.text.x = element_text(angle = 30),
+      panel.grid.minor = element_blank(),
+      panel.grid.major.y = element_blank(),
+      legend.position = "bottom",
+      strip.text.y.left = element_text(angle = 0)
+    ) +
+    scale_x_date(breaks = scales::breaks_pretty(nrow(gantt_dat))) +
+    facet_grid(project ~ .,
+               scales = "free_y",
+               switch = "y") +
+    labs(x = "", y = "") +
+    xlim(gantt_min, gantt_max)
 
-  # gantt_gt <-
-  #   gantt_dat %>%
-  #   dplyr::select(project, objective)
+}
 
+#' Overdue
+#'
+#' @export
 
+pandan_due <- function() {
+  df <- pandan::wrangle_gantt_dat()
 
-      # plotly::ggplotly(p = gantt_plot,
-      #                  tooltip = c("objective", "priorities"))
-
-
+  df %>%
+    dplyr::filter(stringr::str_detect(status, "due")) %>%
+    gt::gt(groupname_col = "fokus")
 }
